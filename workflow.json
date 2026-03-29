@@ -9,8 +9,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -64,
-        0
+        -16,
+        -80
       ],
       "id": "04f8a8e9-a605-42c4-909c-3ed4d1358c6d",
       "name": "Webhook",
@@ -210,8 +210,8 @@
       "type": "n8n-nodes-base.airtable",
       "typeVersion": 2.1,
       "position": [
-        128,
-        0
+        176,
+        -80
       ],
       "id": "31c2dc18-2dd1-409c-80ba-11f39c415049",
       "name": "Airtable Staging",
@@ -246,8 +246,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.1,
       "position": [
-        272,
-        128
+        384,
+        160
       ],
       "id": "bd1566a2-1fa5-47ab-95cc-1a23c577a373",
       "name": "Message a model",
@@ -257,6 +257,62 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        768,
+        -80
+      ],
+      "id": "bc9596c8-6929-42ef-984e-dfed05b6a43a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        960,
+        -208
+      ],
+      "id": "07ce41cd-d8de-4480-b8c5-f42477cffe10",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// 1. Get the raw text from the Gemini output\nconst rawText = $input.first().json.candidates[0].content.parts[0].text ;\n\ntry {\n  // 2. Use Regex to find the first { and last } to extract the JSON block\n  // This ignores backticks, \"json\" labels, or any conversational filler\n  const jsonMatch = rawText.match(/\\{[\\s\\S]*\\}/);\n\n  if (!jsonMatch) {\n    throw new Error(\"No JSON found in model response\");\n  }\n\n  // 3. Parse the cleaned string\n  const data = JSON.parse(jsonMatch[0]);\n\n  // 4. Return the clean keys for your next nodes\n  return {\n    lead_tier: data.lead_tier,\n    personalized_hook: data.personalized_hook,\n    raw_status: \"Success\"\n  };\n\n} catch (error) {\n  // 5. Error handling: If it fails, return the error so the workflow doesn't just crash\n  return {\n    lead_tier: \"Error\",\n    personalized_hook: \"Manual review required: Formatting error.\",\n    raw_status: \"Failed\",\n    error_message: error.message\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        160
+      ],
+      "id": "2461b780-6579-4033-8085-02a1aa5bb4e9",
+      "name": "Split Lead Tier and Personalized message"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the company name\nlet company = $input.first().json.fields.Company|| \"\"; \n\nif (company) {\n  // 1. Clean whitespace first\n  company = company.trim();\n\n  /**\n   * SMART REGEX EXPLAINED:\n   * \\s+          -> Matches one or more spaces before the suffix\n   * (llc|pvt|ltd|pte|pty|inc|corp|limited) -> The list of suffixes to kill\n   * \\.?          -> Matches an optional period (e.g., \"Ltd.\")\n   * $            -> Anchors the match to the very END of the string\n   * i            -> Case-insensitive\n   */\n  const suffixRegex = /\\s+(llc|pvt|ltd|pte|pty|inc|corp|limited)\\.?$/i;\n\n  // 2. Remove the suffix if it's at the end\n  // We run this in a loop just in case a name has double suffixes like \"Company Pvt Ltd\"\n  while (suffixRegex.test(company)) {\n    company = company.replace(suffixRegex, \"\").trim();\n  }\n\n  // 3. Title Case for professional formatting\n  company = company.toLowerCase().split(' ')\n    .map(word => word.charAt(0).toUpperCase() + word.slice(1))\n    .join(' ');\n}\n\nreturn {\n  normalized_name: company\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        -192
+      ],
+      "id": "8c68f061-8cc9-4971-83b1-96b0fe30302e",
+      "name": "Normalize Company Name"
     },
     {
       "parameters": {
@@ -463,60 +519,17 @@
       "type": "n8n-nodes-base.airtable",
       "typeVersion": 2.1,
       "position": [
-        960,
-        64
+        1248,
+        -176
       ],
       "id": "1d93040b-f9ba-4f4c-b900-17054b740f39",
-      "name": "Update record",
+      "name": "Update AI message and Lead Tier in AirTable",
       "credentials": {
         "airtableTokenApi": {
           "id": "lPQFFJ5oyFks9SrX",
           "name": "Airtable Personal Access Token account 2"
         }
       }
-    },
-    {
-      "parameters": {
-        "mode": "combine",
-        "combineBy": "combineAll",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        656,
-        -80
-      ],
-      "id": "bc9596c8-6929-42ef-984e-dfed05b6a43a",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Get the company name\nlet company = $input.first().json.fields.Company|| \"\"; \n\nif (company) {\n  // 1. Clean whitespace first\n  company = company.trim();\n\n  /**\n   * SMART REGEX EXPLAINED:\n   * \\s+          -> Matches one or more spaces before the suffix\n   * (llc|pvt|ltd|pte|pty|inc|corp|limited) -> The list of suffixes to kill\n   * \\.?          -> Matches an optional period (e.g., \"Ltd.\")\n   * $            -> Anchors the match to the very END of the string\n   * i            -> Case-insensitive\n   */\n  const suffixRegex = /\\s+(llc|pvt|ltd|pte|pty|inc|corp|limited)\\.?$/i;\n\n  // 2. Remove the suffix if it's at the end\n  // We run this in a loop just in case a name has double suffixes like \"Company Pvt Ltd\"\n  while (suffixRegex.test(company)) {\n    company = company.replace(suffixRegex, \"\").trim();\n  }\n\n  // 3. Title Case for professional formatting\n  company = company.toLowerCase().split(' ')\n    .map(word => word.charAt(0).toUpperCase() + word.slice(1))\n    .join(' ');\n}\n\nreturn {\n  normalized_name: company\n};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        368,
-        -208
-      ],
-      "id": "8c68f061-8cc9-4971-83b1-96b0fe30302e",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "mode": "combine",
-        "combineBy": "combineAll",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        880,
-        -192
-      ],
-      "id": "07ce41cd-d8de-4480-b8c5-f42477cffe10",
-      "name": "Merge1"
     },
     {
       "parameters": {
@@ -530,24 +543,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1184,
-        96
+        1216,
+        144
       ],
       "id": "b7982177-45a8-47bd-81e8-1c85e127c8cf",
-      "name": "PingHook Node"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// 1. Get the raw text from the Gemini output\nconst rawText = $input.first().json.candidates[0].content.parts[0].text ;\n\ntry {\n  // 2. Use Regex to find the first { and last } to extract the JSON block\n  // This ignores backticks, \"json\" labels, or any conversational filler\n  const jsonMatch = rawText.match(/\\{[\\s\\S]*\\}/);\n\n  if (!jsonMatch) {\n    throw new Error(\"No JSON found in model response\");\n  }\n\n  // 3. Parse the cleaned string\n  const data = JSON.parse(jsonMatch[0]);\n\n  // 4. Return the clean keys for your next nodes\n  return {\n    lead_tier: data.lead_tier,\n    personalized_hook: data.personalized_hook,\n    raw_status: \"Success\"\n  };\n\n} catch (error) {\n  // 5. Error handling: If it fails, return the error so the workflow doesn't just crash\n  return {\n    lead_tier: \"Error\",\n    personalized_hook: \"Manual review required: Formatting error.\",\n    raw_status: \"Failed\",\n    error_message: error.message\n  };\n}"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        624,
-        128
-      ],
-      "id": "2461b780-6579-4033-8085-02a1aa5bb4e9",
-      "name": "Code in JavaScript1"
+      "name": "Send PingHook Alert"
     }
   ],
   "connections": {
@@ -576,7 +576,7 @@
             "index": 0
           },
           {
-            "node": "Code in JavaScript",
+            "node": "Normalize Company Name",
             "type": "main",
             "index": 0
           }
@@ -587,18 +587,7 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update record": {
-      "main": [
-        [
-          {
-            "node": "PingHook Node",
+            "node": "Split Lead Tier and Personalized message",
             "type": "main",
             "index": 0
           }
@@ -616,7 +605,29 @@
         ]
       ]
     },
-    "Code in JavaScript": {
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Update AI message and Lead Tier in AirTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Lead Tier and Personalized message": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Normalize Company Name": {
       "main": [
         [
           {
@@ -627,24 +638,13 @@
         ]
       ]
     },
-    "Merge1": {
+    "Update AI message and Lead Tier in AirTable": {
       "main": [
         [
           {
-            "node": "Update record",
+            "node": "Send PingHook Alert",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
