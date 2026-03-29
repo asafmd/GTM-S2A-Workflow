@@ -1,0 +1,658 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gtm-workflow",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "04f8a8e9-a605-42c4-909c-3ed4d1358c6d",
+      "name": "Webhook",
+      "webhookId": "589dd599-8f24-437f-8893-562735e0dd82"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appgjbXgUc9gNDbCS",
+          "mode": "list",
+          "cachedResultName": "S2A - GTM",
+          "cachedResultUrl": "https://airtable.com/appgjbXgUc9gNDbCS"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblG5nOOq7rHHfetW",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appgjbXgUc9gNDbCS/tblG5nOOq7rHHfetW"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.data.fields[0].value }}",
+            "Company": "={{ $json.body.data.fields[4].value }}",
+            "Status": "New",
+            "Email": "={{ $json.body.data.fields[2].value }}",
+            "Title": "={{ $json.body.data.fields[1].value }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "New",
+                  "value": "New"
+                },
+                {
+                  "name": "Cleaned",
+                  "value": "Cleaned"
+                },
+                {
+                  "name": "Enriched",
+                  "value": "Enriched"
+                },
+                {
+                  "name": "Pushed to HubSpot",
+                  "value": "Pushed to HubSpot"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Normalized Company",
+              "displayName": "Normalized Company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Domain",
+              "displayName": "Domain",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Tier",
+              "displayName": "Lead Tier",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "A (Enterprise)",
+                  "value": "A (Enterprise)"
+                },
+                {
+                  "name": "B (Mid Market)",
+                  "value": "B (Mid Market)"
+                },
+                {
+                  "name": "C (SMB)",
+                  "value": "C (SMB)"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "AI Personalization",
+              "displayName": "AI Personalization",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        0
+      ],
+      "id": "31c2dc18-2dd1-409c-80ba-11f39c415049",
+      "name": "Airtable Staging",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lPQFFJ5oyFks9SrX",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemma-3-4b-it",
+          "mode": "list",
+          "cachedResultName": "models/gemma-3-4b-it"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=### Task\n1. Categorize the Lead Tier (A, B, or C).\n2. Generate a 2-sentence \"Personalized Hook\" for a WhatsApp/LinkedIn message.\n\n### Inputs\n- Name: {{ $json.fields.Name }}\n- Title: {{ $json.fields.Email }}\n- Company: {{ $json.fields.Company }}\n- Domain: {{ $json.fields.Domain }}\n\n### Personalization Guidelines (Wati context)\n- Focus on: How Wati's WhatsApp API can solve a specific pain point for their role (e.g., Lead response time for Sales, or automated updates for Ops).\n- Tone: Professional, helpful, and concise. No \"I hope this finds you well\" fluff.\n- Rule: Mention a specific detail to prove it's not a bot.\n\n### Output Requirement (JSON Format)\nReturn ONLY a JSON object with these two keys:\n{\n  \"lead_tier\": \"A (Enterprise) | B (Mid Market) | C (SMB)\",\n  \"personalized_hook\": \"The 2-sentence message\"\n}\n\nReturn ONLY a raw JSON object. Do NOT include Markdown formatting, backticks (```), or the word \"json\". Your response must start with { and end with }."
+            }
+          ]
+        },
+        "simplify": false,
+        "builtInTools": {},
+        "options": {
+          "includeMergedResponse": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        128
+      ],
+      "id": "bd1566a2-1fa5-47ab-95cc-1a23c577a373",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JSfj0qPCM80vKnv0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appgjbXgUc9gNDbCS",
+          "mode": "list",
+          "cachedResultName": "S2A - GTM",
+          "cachedResultUrl": "https://airtable.com/appgjbXgUc9gNDbCS"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblG5nOOq7rHHfetW",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appgjbXgUc9gNDbCS/tblG5nOOq7rHHfetW"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Lead Tier": "={{ $json.lead_tier }}",
+            "Normalized Company": "={{ $json.normalized_name }}",
+            "AI Personalization": "={{ $json.personalized_hook }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "New",
+                  "value": "New"
+                },
+                {
+                  "name": "Cleaned",
+                  "value": "Cleaned"
+                },
+                {
+                  "name": "Enriched",
+                  "value": "Enriched"
+                },
+                {
+                  "name": "Pushed to HubSpot",
+                  "value": "Pushed to HubSpot"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Normalized Company",
+              "displayName": "Normalized Company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Domain",
+              "displayName": "Domain",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Tier",
+              "displayName": "Lead Tier",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "A (Enterprise)",
+                  "value": "A (Enterprise)"
+                },
+                {
+                  "name": "B (Mid Market)",
+                  "value": "B (Mid Market)"
+                },
+                {
+                  "name": "C (SMB)",
+                  "value": "C (SMB)"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LinkedIn URL",
+              "displayName": "LinkedIn URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "AI Personalization",
+              "displayName": "AI Personalization",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        64
+      ],
+      "id": "1d93040b-f9ba-4f4c-b900-17054b740f39",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lPQFFJ5oyFks9SrX",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        656,
+        -80
+      ],
+      "id": "bc9596c8-6929-42ef-984e-dfed05b6a43a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the company name\nlet company = $input.first().json.fields.Company|| \"\"; \n\nif (company) {\n  // 1. Clean whitespace first\n  company = company.trim();\n\n  /**\n   * SMART REGEX EXPLAINED:\n   * \\s+          -> Matches one or more spaces before the suffix\n   * (llc|pvt|ltd|pte|pty|inc|corp|limited) -> The list of suffixes to kill\n   * \\.?          -> Matches an optional period (e.g., \"Ltd.\")\n   * $            -> Anchors the match to the very END of the string\n   * i            -> Case-insensitive\n   */\n  const suffixRegex = /\\s+(llc|pvt|ltd|pte|pty|inc|corp|limited)\\.?$/i;\n\n  // 2. Remove the suffix if it's at the end\n  // We run this in a loop just in case a name has double suffixes like \"Company Pvt Ltd\"\n  while (suffixRegex.test(company)) {\n    company = company.replace(suffixRegex, \"\").trim();\n  }\n\n  // 3. Title Case for professional formatting\n  company = company.toLowerCase().split(' ')\n    .map(word => word.charAt(0).toUpperCase() + word.slice(1))\n    .join(' ');\n}\n\nreturn {\n  normalized_name: company\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        -208
+      ],
+      "id": "8c68f061-8cc9-4971-83b1-96b0fe30302e",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        880,
+        -192
+      ],
+      "id": "07ce41cd-d8de-4480-b8c5-f42477cffe10",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pinghook.dev/v1/user/send/694840cc-735b-4dfb-9ee2-87f8c547508b/GTM-Signal-to-Action",
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "=User submitted a form:\n\nName: {{ $json.fields.Name }}\nCompany: {{ $json.fields.Company }}\nLead Tier: {{ $json.fields['Lead Tier'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1184,
+        96
+      ],
+      "id": "b7982177-45a8-47bd-81e8-1c85e127c8cf",
+      "name": "PingHook Node"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// 1. Get the raw text from the Gemini output\nconst rawText = $input.first().json.candidates[0].content.parts[0].text ;\n\ntry {\n  // 2. Use Regex to find the first { and last } to extract the JSON block\n  // This ignores backticks, \"json\" labels, or any conversational filler\n  const jsonMatch = rawText.match(/\\{[\\s\\S]*\\}/);\n\n  if (!jsonMatch) {\n    throw new Error(\"No JSON found in model response\");\n  }\n\n  // 3. Parse the cleaned string\n  const data = JSON.parse(jsonMatch[0]);\n\n  // 4. Return the clean keys for your next nodes\n  return {\n    lead_tier: data.lead_tier,\n    personalized_hook: data.personalized_hook,\n    raw_status: \"Success\"\n  };\n\n} catch (error) {\n  // 5. Error handling: If it fails, return the error so the workflow doesn't just crash\n  return {\n    lead_tier: \"Error\",\n    personalized_hook: \"Manual review required: Formatting error.\",\n    raw_status: \"Failed\",\n    error_message: error.message\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        128
+      ],
+      "id": "2461b780-6579-4033-8085-02a1aa5bb4e9",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Airtable Staging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Staging": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "PingHook Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1b1b01d377b823c9cece2300146447271232089e3efe117bba1da6f4f1a69b02"
+  }
+}
